@@ -47,6 +47,7 @@ class WSGIServer:
         env['PATH_INFO'] = self.path
         env['SERVER_NAME'] = self.server_name
         env['SERVER_PORT'] = str(self.port)
+        return env
 
     def set_app(self, application):  # принимает объект стороны приложения используется при конфигурации объекта сервера
         self.application = application
@@ -64,8 +65,6 @@ class WSGIServer:
     def manage_request(self):
         data_from_request = self.connection.recv(self.buffer_size).decode('utf-8')
         self.data_from_request = data_from_request
-
-        print(''.join(f'{line}\n' for line in data_from_request.splitlines()))
 
         self.parse_request(data_from_request)
 
@@ -107,4 +106,18 @@ class WSGIServer:
             self.connection.close()
 
 
-d = WSGIServer('localhost', 4000)
+
+HOST, PORT = '', 8888
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.exit('Ожидает ввод в виде: python wsgi.py <имя_файла>:app')
+    app_path = sys.argv[1]
+    module, application = app_path.split(':')
+
+    module = __import__(module)
+    application = getattr(module, application)
+    print(f'WSGIServer: работает на порту {PORT} ...\n')
+    server = WSGIServer(HOST, PORT)
+    server.set_app(application)
+    server.serve_forever()
