@@ -42,14 +42,14 @@ class WSGIServer:
         env['wsgi.multithread'] = False
         env['wsgi.multiprocess'] = False
         env['wsgi.run_once'] = False
-        # Какая-то шняга для CGI
+        # параметры CGI, передает метод, url и другие параметры, чтобы фреймворк смог сделать роутинг к хендлеру
         env['REQUEST_METHOD'] = self.request_method
         env['PATH_INFO'] = self.path
         env['SERVER_NAME'] = self.server_name
         env['SERVER_PORT'] = str(self.port)
         return env
 
-    def set_app(self, application):  # принимает объект стороны приложения используется при конфигурации объекта сервера
+    def set_app(self, application):  # принимает объект приложения
         self.application = application
 
     # парсинг будет переделан в более нормальный
