@@ -42,7 +42,7 @@ class WSGIServer:
         env['wsgi.multithread'] = False
         env['wsgi.multiprocess'] = False
         env['wsgi.run_once'] = False
-        # параметры CGI, передает метод, url и другие параметры, чтобы фреймворк смог сделать роутинг к хендлеру
+        # параметры CGI деприкатед в ASGI такого нет уже, старая штука, не используется уже, ненужная, deprecated, не нужна
         env['REQUEST_METHOD'] = self.request_method
         env['PATH_INFO'] = self.path
         env['SERVER_NAME'] = self.server_name
